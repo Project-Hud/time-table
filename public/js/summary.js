@@ -27,7 +27,8 @@ var LiveTimeTable = function(dataSource) {
         console.log('create: ', type, index, value)
         $(document).trigger('create', [type, index, value])
       } else if (value.id !== comparison[type][index].id
-        || value.time !== comparison[type][index].time) {
+        || value.time !== comparison[type][index].time
+        || value.image !== comparison[type][index].image) {
 
         cache[type][index] = value
         console.log('update: ', type, index, value)

@@ -54,9 +54,9 @@ var UpdateDom = function() {
       }).fadeIn()
     }
 
-    if (!imageSelector.attr('src')) {
-      imageSelector.attr('src', 'http://img.clockte.ch/70x70.png')
-    }
+    // if (!imageSelector.attr('src')) {
+    //   imageSelector.attr('src', 'http://img.clockte.ch/70x70.png')
+    // }
 
     if (!matched(imageSelector.attr('src'), data.image)) {
       imageSelector.fadeOut(function() {
