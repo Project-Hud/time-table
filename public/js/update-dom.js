@@ -3,19 +3,19 @@ var d3 = d3
 var UpdateDom = function() {
   var self = {
      x: d3.scale.linear()
-      .domain([0, 150]) // max value of data
+      .domain([0, 38]) // max value of data
       .range([0, 200]) // mapping to pixel sizes.
     , y: d3.scale.ordinal()
       .domain([10])
       .rangeBands([0, 24])
-    , ramp: d3.scale.linear().domain([1,100,200]).range(['#D80000', '#CE5100', '#00D002'])
+    , ramp: d3.scale.linear().domain([1,15,38]).range(['#D80000', '#CE5100', '#00D002'])
   }
 
   function fakeDynamicData() {
     var type = ['best', 'worst']
       , randomType = function() { return type[Math.floor(Math.random() * 2)] }
       , randomIndex = function() { return Math.floor(Math.random() * 4) }
-      , randomValue = function() { return (Math.random() * 150).toFixed(2)}
+      , randomValue = function() { return (Math.random() * 38).toFixed(2)}
 
     setInterval(function() {
       var data =
