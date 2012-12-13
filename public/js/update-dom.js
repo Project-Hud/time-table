@@ -30,7 +30,7 @@ var UpdateDom = function() {
   }
 
   function init() {
-    fakeDynamicData()
+    // fakeDynamicData()
     $(document).bind('create', onCreate);
     $(document).bind('update', onUpdate);
   }
