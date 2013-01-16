@@ -9,10 +9,10 @@ a {
   color: #00B7FF;
 }
 
-.best {
+.employee {
   float: left;
 }
 
-.worst {
-  float: right;
+.best {
+  float: left;
 }
