@@ -2,20 +2,20 @@ var d3 = d3
 
 var UpdateDom = function() {
   var self = {
-     x: d3.scale.linear()
-      .domain([0, 38]) // max value of data
-      .range([0, 200]) // mapping to pixel sizes.
-    , y: d3.scale.ordinal()
+     y: d3.scale.linear()
+      .domain([0, 50]) // max value of data
+      .range([0, 400]) // mapping to pixel sizes.
+    , x: d3.scale.ordinal()
       .domain([10])
       .rangeBands([0, 24])
-    , ramp: d3.scale.linear().domain([1,15,38]).range(['#D80000', '#CE5100', '#00D002'])
+    , ramp: d3.scale.linear().domain([1,34,69]).range(['#E90712', '#E77524', '#02A62D'])
   }
 
   function fakeDynamicData() {
     var type = ['best', 'worst']
       , randomType = function() { return type[Math.floor(Math.random() * 2)] }
       , randomIndex = function() { return Math.floor(Math.random() * 4) }
-      , randomValue = function() { return (Math.random() * 38).toFixed(2)}
+      , randomValue = function() { return (Math.random() * 50).toFixed(2)}
 
     setInterval(function() {
       var data =
@@ -30,7 +30,7 @@ var UpdateDom = function() {
   }
 
   function init() {
-    // fakeDynamicData()
+    fakeDynamicData()
     $(document).bind('create', onCreate);
     $(document).bind('update', onUpdate);
   }
@@ -77,20 +77,20 @@ var UpdateDom = function() {
       .data([value])
       .transition()
       .duration(1000)
-      .attr('width', self.x)
+      .attr('height', self.y)
       .style('fill', self.ramp(value))
 
-    chart.selectAll('text')
-      .data([value.toFixed(2) + ' hours logged'])
-      .transition()
-      .duration(1000)
-      .attr('x', 0)
-      .attr('y', function(d) { return self.y(d) + self.y.rangeBand() / 2; })
-      .attr('dx', 5 ) // padding-right
-      .attr('dy', '.35em') // vertical-align: middle
-      .attr('text-anchor', 'start') // text-align: right
-      .style('fill', '#FCFCFC')
-      .text(String)
+    // chart.selectAll('text')
+    //   .data([value.toFixed(2) + ' hours logged'])
+    //   .transition()
+    //   .duration(1000)
+    //   .attr('x', 0)
+    //   .attr('y', function(d) { return self.y(d) + self.y.rangeBand() / 2; })
+    //   .attr('dx', 5 ) // padding-right
+    //   .attr('dy', '.35em') // vertical-align: middle
+    //   .attr('text-anchor', 'start') // text-align: right
+    //   .style('fill', '#FCFCFC')
+    //   .text(String)
 
   }
 

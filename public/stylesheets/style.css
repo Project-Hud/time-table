@@ -11,8 +11,21 @@ a {
 
 .employee {
   float: left;
+  padding-left: 50px;
+}
+
+.employee img {
+  border: 1px solid #ffffff;
 }
 
 .best {
   float: left;
+}
+
+.worst {
+  float: right;
+}
+
+.chart {
+  background: url(../images/bg.png) repeat-y;
 }
