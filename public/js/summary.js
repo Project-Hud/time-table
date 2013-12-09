@@ -15,7 +15,7 @@ var LiveTimeTable = function(dataSource) {
   function processUpdate() {
     self.getData(function(data) {
       checkIfUpdated(data.slice(0,4), cache, 'best')
-      checkIfUpdated(data.slice(-4).reverse(), cache, 'worst')
+      checkIfUpdated(data.slice(-4), cache, 'worst')
     })
   }
 

@@ -1,24 +1,61 @@
 extends layout
 
+mixin employee-list(name)
+  .employee-list(class='js-employee-list--'+name.toLowerCase())
+    .employee-list__header
+      h1.employee-list__title=name
+    .employee-list__content
+      +employees
+
+
+mixin employees
+  ul.grid
+    +employee
+    +employee
+    +employee
+    +employee
+
+mixin employee
+  li.employee.js-employee.grid__item.one-quarter
+    .employee__graph
+      .employee__graph__label.js-hours
+      .employee__graph__output.js-graph
+    .employee__avatar
+      .employee__initials.js-employee-initials
+      img.employee__image.js-avatar(height='72', width='72', src='')
+
+
 block content
-  h1= title
-  .best
-    h3 Best timekeepers
-    .employee
-      img.avatar(height='72', src='')
-    .employee
-      img.avatar(height='72', src='')
-    .employee
-      img.avatar(height='72', src='')
-    .employee
-      img.avatar(height='72', src='')
-  .worst
-    h3 Worst timekeepers
-    .employee
-      img.avatar(height='72', src='')
-    .employee
-      img.avatar(height='72', src='')
-    .employee
-      img.avatar(height='72', src='')
-    .employee
-      img.avatar(height='72', src='')
+  - var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  - var curr = new Date; // get current date
+  - var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
+  - var last = first + 6; // last day is the first day + 6
+  - var firstDay = new Date(curr.setDate(first));
+  - var lastDay = new Date(curr.setDate(last));
+
+  .timesheet-graph
+    .timesheet-graph__header
+      h1.timesheet-graph__title Time League
+      span.timesheet-graph__week
+        .week
+          span.week__first-day
+            =firstDay.getDate()
+            | 
+          if lastDay.getMonth() != firstDay.getMonth()
+            span.week__first-month
+              =month[firstDay.getMonth()]
+              | 
+          span.week__divider - 
+          span.week__last-day
+            =lastDay.getDate()
+            | 
+          span.week__last-month
+            =month[lastDay.getMonth()]
+            | 
+
+    .timesheet-graph__content
+      .grid
+        .grid__item.one-half
+          +employee-list('Best')
+        .grid__item.one-half
+          +employee-list('Worst')

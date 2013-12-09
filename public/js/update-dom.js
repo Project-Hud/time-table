@@ -43,33 +43,38 @@ var UpdateDom = function() {
   }
 
   function updateInfo(selector, data) {
-    var imageSelector = selector.find('.avatar')
-      , nameSelector = selector.find('.name')
+    var imageSelector = selector.find('.js-avatar')
+      , hoursSelector = selector.find('.js-hours')
+      , initialsSelect = selector.find('.js-employee-initials')
       , name = data.firstName + ' ' + data.lastName
-
-
-    if (!matched(nameSelector.text(), name)) {
-      nameSelector.fadeOut(function() {
-        $(this).text(name)
-      }).fadeIn()
-    }
+      , initials = data.firstName.charAt(0) + data.lastName.charAt(0)
+      , time = +data.time
 
     // if (!imageSelector.attr('src')) {
     //   imageSelector.attr('src', 'http://img.clockte.ch/70x70.png')
     // }
 
+    hoursSelector.text([time.toFixed(0) + ' HR'])
+    initialsSelect.text(initials)
+
     if (!matched(imageSelector.attr('src'), data.image)) {
       imageSelector.fadeOut(function() {
         $(this).attr('src', data.image)
-      }).fadeIn()
+        $(this).attr('title', name)
+      })
+
+      if(data.image != null) {
+        imageSelector.fadeIn()
+      }
     }
 
   }
 
   function onUpdate(event, type, index, data) {
     var value = +data.time // cast time to a float
-      , selector = $('.' + type + ' .employee:eq(' + index + ')')
-      , chart = d3.select(selector.find('svg')[0])
+      , selector = $('.js-employee-list--' + type + ' .js-employee:eq(' + index + ')')
+      , graph = selector.find('.js-graph')
+      , chart = d3.select(graph.find('svg')[0])
 
     updateInfo(selector, data)
 
@@ -77,61 +82,29 @@ var UpdateDom = function() {
       .data([value])
       .transition()
       .duration(1000)
-      .attr('width', self.x)
+      .attr('height', self.x)
       .style('fill', self.ramp(value))
-
-    chart.selectAll('text')
-      .data([value.toFixed(2) + ' hours logged'])
-      .transition()
-      .duration(1000)
-      .attr('x', 0)
-      .attr('y', function(d) { return self.y(d) + self.y.rangeBand() / 2; })
-      .attr('dx', 5 ) // padding-right
-      .attr('dy', '.35em') // vertical-align: middle
-      .attr('text-anchor', 'start') // text-align: right
-      .style('fill', '#FCFCFC')
-      .text(String)
-
   }
 
   function onCreate(event, type, index, data) {
     var value = +data.time // cast time to a float
-      , selector = $('.' + type + ' .employee:eq(' + index + ')')
+      , selector = $('.js-employee-list--' + type + ' .js-employee:eq(' + index + ')')
+      , graph = selector.find('.js-graph')
 
     updateInfo(selector, data)
 
-    var chart = d3.select(selector[0]).append('p').append('svg')
+    var chart = d3.select(graph[0]).append('svg')
       .attr('class', 'chart')
-      .attr('width', 200)
-      .attr('height', 20)
+      .attr('width', 76)
+      .attr('height', 500)
 
     chart.selectAll('rect')
       .data([value])
       .enter().append('rect')
       .attr('y', function(d, i) { return i * 20; })
-      .attr('width', self.x)
-      .attr('height', 20)
+      .attr('height', self.x)
+      .attr('width', 76)
       .style('fill', self.ramp(value))
-
-    // Adding text to graphs
-
-    chart.selectAll('rect')
-      .data([value])
-      .enter().append('rect')
-      .attr('y', self.y)
-      .attr('width', self.x)
-      .attr('height', self.y.rangeBand())
-
-    chart.selectAll('text')
-      .data([value.toFixed(2) + ' hours logged'])
-      .enter().append('text')
-      .attr('x', 0)
-      .attr('y', function(d) { return self.y(d) + self.y.rangeBand() / 2; })
-      .attr('dx', 5 ) // padding-right
-      .attr('dy', '.35em') // vertical-align: middle
-      .attr('text-anchor', 'start') // text-align: right
-      .style('fill', '#FCFCFC')
-      .text(String)
   }
 
   init()
