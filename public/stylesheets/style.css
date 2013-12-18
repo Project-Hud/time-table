@@ -29,6 +29,16 @@ body {
 }
 
 
+.timesheet-graph {
+  width: 752px;
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
 .timesheet-graph__header {
   text-align: center;
 }
@@ -40,16 +50,12 @@ body {
   font-size: 36px;
 }
 
-.timesheet-graph__content {
-  width: 752px;
-  margin: 0 auto;
-}
-
-.week {
+.timesheet-graph__meta {
   text-transform: uppercase;
   margin-bottom: 20px;
   font-size: 24px;
 }
+
 
 .employee-list__header {
   position: relative;
@@ -77,6 +83,7 @@ body {
   width: 365px;
   margin: 0 auto;
 }
+
 
 .employee {
 

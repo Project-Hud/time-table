@@ -26,32 +26,10 @@ mixin employee
 
 
 block content
-  - var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-  - var curr = new Date; // get current date
-  - var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
-  - var last = first + 6; // last day is the first day + 6
-  - var firstDay = new Date(curr.setDate(first));
-  - var lastDay = new Date(curr.setDate(last));
-
   .timesheet-graph
     .timesheet-graph__header
       h1.timesheet-graph__title Time League
-      span.timesheet-graph__week
-        .week
-          span.week__first-day
-            =firstDay.getDate()
-            | 
-          if lastDay.getMonth() != firstDay.getMonth()
-            span.week__first-month
-              =month[firstDay.getMonth()]
-              | 
-          span.week__divider - 
-          span.week__last-day
-            =lastDay.getDate()
-            | 
-          span.week__last-month
-            =month[lastDay.getMonth()]
-            | 
+      span.timesheet-graph__meta.timesheet-graph__meta--date.js-time-table-formatted-date
 
     .timesheet-graph__content
       .grid

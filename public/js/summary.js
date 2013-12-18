@@ -13,9 +13,12 @@ var LiveTimeTable = function(dataSource) {
   }
 
   function processUpdate() {
+    var $formattedDate = $('.js-time-table-formatted-date')
+
     self.getData(function(data) {
-      checkIfUpdated(data.slice(0,4), cache, 'best')
-      checkIfUpdated(data.slice(-4), cache, 'worst')
+      $formattedDate.text(data.formattedDate)
+      checkIfUpdated(data.employees.slice(0,4), cache, 'best')
+      checkIfUpdated(data.employees.slice(-4), cache, 'worst')
     })
   }
 
@@ -41,7 +44,7 @@ var LiveTimeTable = function(dataSource) {
   self.getData = function(cb) {
     $.get(dataSource, function(data) {
       if (data && data.employees) {
-        cb(data.employees)
+        cb(data)
       } else {
         return false
       }

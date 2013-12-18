@@ -1,10 +1,12 @@
 var d3 = d3
 
 var UpdateDom = function() {
-  var self = {
+
+  var rangeHeight = 400
+    , self = {
      x: d3.scale.linear()
       .domain([0, 38]) // max value of data
-      .range([0, 200]) // mapping to pixel sizes.
+      .range([0, rangeHeight]) // mapping to pixel sizes.
     , y: d3.scale.ordinal()
       .domain([10])
       .rangeBands([0, 24])
@@ -96,7 +98,7 @@ var UpdateDom = function() {
     var chart = d3.select(graph[0]).append('svg')
       .attr('class', 'chart')
       .attr('width', 76)
-      .attr('height', 500)
+      .attr('height', rangeHeight)
 
     chart.selectAll('rect')
       .data([value])
