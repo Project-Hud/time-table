@@ -50,13 +50,12 @@ var UpdateDom = function() {
       , initialsSelect = selector.find('.js-employee-initials')
       , name = data.firstName + ' ' + data.lastName
       , initials = data.firstName.charAt(0) + data.lastName.charAt(0)
-      , time = +data.time
 
     // if (!imageSelector.attr('src')) {
     //   imageSelector.attr('src', 'http://img.clockte.ch/70x70.png')
     // }
 
-    hoursSelector.text([time.toFixed(0) + ' HR'])
+    hoursSelector.text([(+data.time).toFixed(0) + ' HR'])
     initialsSelect.text(initials)
 
     if (!matched(imageSelector.attr('src'), data.image)) {
@@ -73,7 +72,7 @@ var UpdateDom = function() {
   }
 
   function onUpdate(event, type, index, data) {
-    var value = +data.time // cast time to a float
+    var value = (+data.time).toFixed(0) // cast time to a float
       , selector = $('.js-employee-list--' + type + ' .js-employee:eq(' + index + ')')
       , graph = selector.find('.js-graph')
       , chart = d3.select(graph.find('svg')[0])
@@ -89,7 +88,7 @@ var UpdateDom = function() {
   }
 
   function onCreate(event, type, index, data) {
-    var value = +data.time // cast time to a float
+    var value = (+data.time).toFixed(0) // cast time to a float
       , selector = $('.js-employee-list--' + type + ' .js-employee:eq(' + index + ')')
       , graph = selector.find('.js-graph')
 
