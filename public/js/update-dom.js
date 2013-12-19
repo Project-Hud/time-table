@@ -13,26 +13,7 @@ var UpdateDom = function() {
     , ramp: d3.scale.linear().domain([1,15,38]).range(['#D80000', '#CE5100', '#00D002'])
   }
 
-  function fakeDynamicData() {
-    var type = ['best', 'worst']
-      , randomType = function() { return type[Math.floor(Math.random() * 2)] }
-      , randomIndex = function() { return Math.floor(Math.random() * 4) }
-      , randomValue = function() { return (Math.random() * 38).toFixed(2)}
-
-    setInterval(function() {
-      var data =
-        { order: 20
-        , id: '6151'
-        , firstName: 'Sam'
-        , lastName: 'Chatwin'
-        , time: '' + randomValue()
-      }
-      $(document).trigger('update', [randomType(), randomIndex(), data])
-    }, 2000);
-  }
-
   function init() {
-    // fakeDynamicData()
     $(document).bind('create', onCreate);
     $(document).bind('update', onUpdate);
   }
@@ -71,11 +52,13 @@ var UpdateDom = function() {
 
   }
 
-  function onUpdate(event, type, index, data) {
+  function onUpdate(event, type, index, data, maxTimeFromHighestEmployee) {
     var value = (+data.time).toFixed(0) // cast time to a float
       , selector = $('.js-employee-list--' + type + ' .js-employee:eq(' + index + ')')
       , graph = selector.find('.js-graph')
       , chart = d3.select(graph.find('svg')[0])
+
+    self.x.domain([0, maxTimeFromHighestEmployee])
 
     updateInfo(selector, data)
 
@@ -87,10 +70,12 @@ var UpdateDom = function() {
       .style('fill', self.ramp(value))
   }
 
-  function onCreate(event, type, index, data) {
+  function onCreate(event, type, index, data, maxTimeFromHighestEmployee) {
     var value = (+data.time).toFixed(0) // cast time to a float
       , selector = $('.js-employee-list--' + type + ' .js-employee:eq(' + index + ')')
       , graph = selector.find('.js-graph')
+
+    self.x.domain([0, maxTimeFromHighestEmployee])
 
     updateInfo(selector, data)
 
