@@ -1,36 +1,19 @@
 var d3 = d3
 
 var UpdateDom = function() {
-  var self = {
-     y: d3.scale.linear()
-      .domain([0, 50]) // max value of data
-      .range([0, 400]) // mapping to pixel sizes.
-    , x: d3.scale.ordinal()
+
+  var rangeHeight = 400
+    , self = {
+     x: d3.scale.linear()
+      .domain([0, 38]) // max value of data
+      .range([0, rangeHeight]) // mapping to pixel sizes.
+    , y: d3.scale.ordinal()
       .domain([10])
       .rangeBands([0, 24])
-    , ramp: d3.scale.linear().domain([1,34,69]).range(['#E90712', '#E77524', '#02A62D'])
-  }
-
-  function fakeDynamicData() {
-    var type = ['best', 'worst']
-      , randomType = function() { return type[Math.floor(Math.random() * 2)] }
-      , randomIndex = function() { return Math.floor(Math.random() * 4) }
-      , randomValue = function() { return (Math.random() * 50).toFixed(2)}
-
-    setInterval(function() {
-      var data =
-        { order: 20
-        , id: '6151'
-        , firstName: 'Sam'
-        , lastName: 'Chatwin'
-        , time: '' + randomValue()
-      }
-      $(document).trigger('update', [randomType(), randomIndex(), data])
-    }, 2000);
+    , ramp: d3.scale.linear().domain([1,15,38]).range(['#D80000', '#CE5100', '#00D002'])
   }
 
   function init() {
-    fakeDynamicData()
     $(document).bind('create', onCreate);
     $(document).bind('update', onUpdate);
   }
@@ -43,33 +26,39 @@ var UpdateDom = function() {
   }
 
   function updateInfo(selector, data) {
-    var imageSelector = selector.find('.avatar')
-      , nameSelector = selector.find('.name')
+    var imageSelector = selector.find('.js-avatar')
+      , hoursSelector = selector.find('.js-hours')
+      , initialsSelect = selector.find('.js-employee-initials')
       , name = data.firstName + ' ' + data.lastName
-
-
-    if (!matched(nameSelector.text(), name)) {
-      nameSelector.fadeOut(function() {
-        $(this).text(name)
-      }).fadeIn()
-    }
+      , initials = data.firstName.charAt(0) + data.lastName.charAt(0)
 
     // if (!imageSelector.attr('src')) {
     //   imageSelector.attr('src', 'http://img.clockte.ch/70x70.png')
     // }
 
+    hoursSelector.text([(+data.time).toFixed(0) + ' HR'])
+    initialsSelect.text(initials)
+
     if (!matched(imageSelector.attr('src'), data.image)) {
       imageSelector.fadeOut(function() {
         $(this).attr('src', data.image)
-      }).fadeIn()
+        $(this).attr('title', name)
+      })
+
+      if(data.image != null) {
+        imageSelector.fadeIn()
+      }
     }
 
   }
 
-  function onUpdate(event, type, index, data) {
-    var value = +data.time // cast time to a float
-      , selector = $('.' + type + ' .employee:eq(' + index + ')')
-      , chart = d3.select(selector.find('svg')[0])
+  function onUpdate(event, type, index, data, maxTimeFromHighestEmployee) {
+    var value = (+data.time).toFixed(0) // cast time to a float
+      , selector = $('.js-employee-list--' + type + ' .js-employee:eq(' + index + ')')
+      , graph = selector.find('.js-graph')
+      , chart = d3.select(graph.find('svg')[0])
+
+    self.x.domain([0, maxTimeFromHighestEmployee])
 
     updateInfo(selector, data)
 
@@ -77,61 +66,31 @@ var UpdateDom = function() {
       .data([value])
       .transition()
       .duration(1000)
-      .attr('height', self.y)
+      .attr('height', self.x)
       .style('fill', self.ramp(value))
-
-    // chart.selectAll('text')
-    //   .data([value.toFixed(2) + ' hours logged'])
-    //   .transition()
-    //   .duration(1000)
-    //   .attr('x', 0)
-    //   .attr('y', function(d) { return self.y(d) + self.y.rangeBand() / 2; })
-    //   .attr('dx', 5 ) // padding-right
-    //   .attr('dy', '.35em') // vertical-align: middle
-    //   .attr('text-anchor', 'start') // text-align: right
-    //   .style('fill', '#FCFCFC')
-    //   .text(String)
-
   }
 
-  function onCreate(event, type, index, data) {
-    var value = +data.time // cast time to a float
-      , selector = $('.' + type + ' .employee:eq(' + index + ')')
+  function onCreate(event, type, index, data, maxTimeFromHighestEmployee) {
+    var value = (+data.time).toFixed(0) // cast time to a float
+      , selector = $('.js-employee-list--' + type + ' .js-employee:eq(' + index + ')')
+      , graph = selector.find('.js-graph')
+
+    self.x.domain([0, maxTimeFromHighestEmployee])
 
     updateInfo(selector, data)
 
-    var chart = d3.select(selector[0]).append('p').append('svg')
+    var chart = d3.select(graph[0]).append('svg')
       .attr('class', 'chart')
-      .attr('width', 200)
-      .attr('height', 20)
+      .attr('width', 76)
+      .attr('height', rangeHeight)
 
     chart.selectAll('rect')
       .data([value])
       .enter().append('rect')
       .attr('y', function(d, i) { return i * 20; })
-      .attr('width', self.x)
-      .attr('height', 20)
+      .attr('height', self.x)
+      .attr('width', 76)
       .style('fill', self.ramp(value))
-
-    // Adding text to graphs
-
-    chart.selectAll('rect')
-      .data([value])
-      .enter().append('rect')
-      .attr('y', self.y)
-      .attr('width', self.x)
-      .attr('height', self.y.rangeBand())
-
-    chart.selectAll('text')
-      .data([value.toFixed(2) + ' hours logged'])
-      .enter().append('text')
-      .attr('x', 0)
-      .attr('y', function(d) { return self.y(d) + self.y.rangeBand() / 2; })
-      .attr('dx', 5 ) // padding-right
-      .attr('dy', '.35em') // vertical-align: middle
-      .attr('text-anchor', 'start') // text-align: right
-      .style('fill', '#FCFCFC')
-      .text(String)
   }
 
   init()

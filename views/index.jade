@@ -1,24 +1,39 @@
 extends layout
 
+mixin employee-list(name)
+  .employee-list(class='js-employee-list--'+name.toLowerCase())
+    .employee-list__header
+      h1.employee-list__title=name
+    .employee-list__content
+      +employees
+
+
+mixin employees
+  ul.grid
+    +employee
+    +employee
+    +employee
+    +employee
+
+mixin employee
+  li.employee.js-employee.grid__item.one-quarter
+    .employee__graph
+      .employee__graph__label.js-hours
+      .employee__graph__output.js-graph
+    .employee__avatar
+      .employee__initials.js-employee-initials
+      img.employee__image.js-avatar(height='72', width='72', src='')
+
+
 block content
-  h1= title
-  .best
-    h3 Best timekeepers
-    .employee
-      img.avatar(height='72', src='')
-    .employee
-      img.avatar(height='72', src='')
-    .employee
-      img.avatar(height='72', src='')
-    .employee
-      img.avatar(height='72', src='')
-  .worst
-    h3 Worst timekeepers
-    .employee
-      img.avatar(height='72', src='')
-    .employee
-      img.avatar(height='72', src='')
-    .employee
-      img.avatar(height='72', src='')
-    .employee
-      img.avatar(height='72', src='')
+  .timesheet-graph
+    .timesheet-graph__header
+      h1.timesheet-graph__title Time League
+      span.timesheet-graph__meta.timesheet-graph__meta--date.js-time-table-formatted-date
+
+    .timesheet-graph__content
+      .grid
+        .grid__item.one-half
+          +employee-list('Best')
+        .grid__item.one-half
+          +employee-list('Worst')
