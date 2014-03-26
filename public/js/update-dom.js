@@ -2,7 +2,7 @@ var d3 = d3
 
 var UpdateDom = function() {
 
-  var rangeHeight = 400
+  var rangeHeight = $(window).innerHeight() * 0.47
     , self = {
      x: d3.scale.linear()
       .domain([0, 38]) // max value of data
@@ -81,7 +81,7 @@ var UpdateDom = function() {
 
     var chart = d3.select(graph[0]).append('svg')
       .attr('class', 'chart')
-      .attr('width', 76)
+      .attr('width', '100%')
       .attr('height', rangeHeight)
 
     chart.selectAll('rect')
@@ -89,7 +89,7 @@ var UpdateDom = function() {
       .enter().append('rect')
       .attr('y', function(d, i) { return i * 20; })
       .attr('height', self.x)
-      .attr('width', 76)
+      .attr('width', '100%')
       .style('fill', self.ramp(value))
   }
 

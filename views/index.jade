@@ -22,18 +22,19 @@ mixin employee
       .employee__graph__output.js-graph
     .employee__avatar
       .employee__initials.js-employee-initials
-      img.employee__image.js-avatar(height='72', width='72', src='')
+      img.employee__image.js-avatar(height='100%', width='100%', src='')
 
 
 block content
-  .timesheet-graph
-    .timesheet-graph__header
-      h1.timesheet-graph__title Time League
-      span.timesheet-graph__meta.timesheet-graph__meta--date.js-time-table-formatted-date
+  .widget
+    .timesheet-graph
+      .timesheet-graph__header
+        h1.widget__title Time League
+        span.timesheet-graph__meta.timesheet-graph__meta--date.js-time-table-formatted-date
 
-    .timesheet-graph__content
-      .grid
-        .grid__item.one-half
-          +employee-list('Best')
-        .grid__item.one-half
-          +employee-list('Worst')
+      .timesheet-graph__content
+        .grid
+          .grid__item.one-half
+            +employee-list('Best')
+          .grid__item.one-half
+            +employee-list('Worst')
