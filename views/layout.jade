@@ -2,7 +2,7 @@ doctype
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/index.css')
+    link(rel='stylesheet', href=versionPath('/stylesheets/index.css'))
     script.
       WebFontConfig = { fontdeck: { id: '39767' } };
 
@@ -19,8 +19,8 @@ html
     block content
   script(src='//d3js.org/d3.v2.js')
   script(src='//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js')
-  script(src='/js/summary.js')
-  script(src='/js/update-dom.js')
+  script(src=versionPath('/js/summary.js'))
+  script(src=versionPath('/js/update-dom.js'))
   script.
     var update = new UpdateDom()
     var summary = new LiveTimeTable("https://intranet.clock.co.uk/api/time-table.php?Action=Summary&Exclude=[6029, 6519, 7140, 7051, 7168, 7138, 5177, 6781, 6896, 5915, 7082, 6932]")
