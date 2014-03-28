@@ -14,5 +14,5 @@ results
 npm-debug.log
 node_modules
 
-public/stylesheets/**/*.css
 static-file-map.json
+public/stylesheets/**/*.css
