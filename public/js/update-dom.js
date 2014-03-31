@@ -26,27 +26,20 @@ var UpdateDom = function() {
   }
 
   function updateInfo(selector, data) {
-    var imageSelector = selector.find('.js-avatar')
+    var avatarSelector = selector.find('.js-avatar')
       , hoursSelector = selector.find('.js-hours')
-      , initialsSelect = selector.find('.js-employee-initials')
-      , name = data.firstName + ' ' + data.lastName
       , initials = data.firstName.charAt(0) + data.lastName.charAt(0)
 
-    // if (!imageSelector.attr('src')) {
-    //   imageSelector.attr('src', 'http://img.clockte.ch/70x70.png')
-    // }
-
     hoursSelector.text([(+data.time).toFixed(0) + ' HR'])
-    initialsSelect.text(initials)
+    avatarSelector.attr('data-initials', initials)
 
-    if (!matched(imageSelector.attr('src'), data.image)) {
-      imageSelector.fadeOut(function() {
-        $(this).attr('src', data.image)
-        $(this).attr('title', name)
+    if (!matched(avatarSelector.css('background-image'), data.image)) {
+      avatarSelector.fadeOut(function() {
+        $(this).css('background-image', 'url(' + data.image + ')')
       })
 
       if(data.image != null) {
-        imageSelector.fadeIn()
+        avatarSelector.fadeIn()
       }
     }
 
