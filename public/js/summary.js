@@ -29,14 +29,12 @@ var LiveTimeTable = function(dataSource) {
     data.forEach(function(value, index) {
       if (typeof comparison[type][index] === 'undefined') {
         cache[type][index] = value
-        //console.log('create: ', type, index, value)
         $(document).trigger('create', [type, index, value, maxTimeFromHighestEmployee])
       } else if (value.id !== comparison[type][index].id
-        || value.time !== comparison[type][index].time
-        || value.image !== comparison[type][index].image) {
+              || value.time !== comparison[type][index].time
+              || value.image !== comparison[type][index].image) {
 
         cache[type][index] = value
-        //console.log('update: ', type, index, value)
         $(document).trigger('update', [type, index, value, maxTimeFromHighestEmployee])
       }
     })

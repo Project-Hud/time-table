@@ -18,7 +18,7 @@ var UpdateDom = function() {
     $(document).bind('update', onUpdate);
   }
 
-  function matched(item, previous) {
+  function matching(item, previous) {
     if (item === previous) {
       return true
     }
@@ -31,18 +31,39 @@ var UpdateDom = function() {
       , initials = data.firstName.charAt(0) + data.lastName.charAt(0)
 
     hoursSelector.text([(+data.time).toFixed(0) + ' HR'])
-    avatarSelector.attr('data-initials', initials)
 
-    if (!matched(avatarSelector.css('background-image'), data.image)) {
-      avatarSelector.fadeOut(function() {
-        $(this).css('background-image', 'url(' + data.image + ')')
-      })
-
-      if(data.image != null) {
-        avatarSelector.fadeIn()
-      }
+    if (data.image === null) {
+      avatarSelector
+        .attr('data-initials', initials)
+        .css('opacity', 1)
+      return
     }
 
+    function hide() {
+      avatarSelector.css('opacity', 0)
+    }
+
+    function show(delay) {
+      var img = $('<img>');
+      img.one('load', function () {
+        setTimeout(function () { // wait for fade
+          avatarSelector
+            .css('background-image', 'url(' + data.image + ')')
+            .css('opacity', 1)
+          img = null // prevent leak?
+        }, delay || 500)
+      })
+      .attr('src', data.image)
+    }
+
+    if (!matching(avatarSelector.css('background-image'), 'url(' + data.image + ')')) {
+      hide()
+      if (matching(avatarSelector.css('background-image'), 'none')) {
+        show(Math.ceil(Math.random() * 5) * 100) // randomised max 500ms delay
+      } else {
+        show()
+      }
+    }
   }
 
   function onUpdate(event, type, index, data, maxTimeFromHighestEmployee) {
@@ -55,12 +76,14 @@ var UpdateDom = function() {
 
     updateInfo(selector, data)
 
-    chart.selectAll('rect')
-      .data([value])
-      .transition()
-      .duration(1000)
-      .attr('height', self.x)
-      .style('fill', self.ramp(value))
+    setTimeout(function () {
+      chart.selectAll('rect')
+        .data([value])
+        .transition()
+        .duration(1000)
+        .attr('height', self.x)
+        .style('fill', self.ramp(value))
+    }, 500)
   }
 
   function onCreate(event, type, index, data, maxTimeFromHighestEmployee) {
@@ -81,8 +104,10 @@ var UpdateDom = function() {
       .data([value])
       .enter().append('rect')
       .attr('y', function(d, i) { return i * 20; })
-      .attr('height', self.x)
       .attr('width', '100%')
+      .transition()
+      .duration(1000)
+      .attr('height', self.x)
       .style('fill', self.ramp(value))
   }
 
